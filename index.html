@@ -38,35 +38,124 @@
             // https://leaflet-extras.github.io/leaflet-providers/preview/
             L.tileLayer(CDB_URL, {  attribution: ATTR }).addTo(mymap);
 
-            waypoints = [
-                    L.latLng(40.042271, -75.502317),           
-                    L.latLng(40.051199, -75.499109),
-                    L.latLng(40.06, -75.499),
-                    L.latLng(40.07, -75.507)
+            waypoints1 = [
+                    L.latLng(40.1288,-74.85482),
+                    L.latLng(40.121452,-74.849187),
+                    L.latLng(40.125297,-74.852144),
+                    L.latLng(40.13012,-74.84713),
+                    L.latLng(40.1245,-74.844189),
+                    L.latLng(40.1717,-74.766026),
+                    L.latLng(40.1075,-74.901637),
+                    L.latLng(40.11857,-74.884448),
+                    L.latLng(40.1662268,-74.7689032)
+                ];
+
+            waypoints2 = [
+                    L.latLng(40.109622,-74.979394),
+                    L.latLng(40.121657,-74.998897),
+                    L.latLng(40.1087,-75.001522),
+                    L.latLng(40.1053,-75.001189),
+                    L.latLng(40.106985,-75.007719),
+                    L.latLng(40.101	,-75.007492),
+                    L.latLng(40.0838,-74.99496),
+                    L.latLng(40.0742,-75.02741),
+                    L.latLng(40.084413,-75.02486),
+                    L.latLng(40.095874,-75.004787),
+                    L.latLng(40.096316,-75.005304),
+                    L.latLng(40.1115574,-74.987011)                      
+                ];
+
+            waypoints3 = [
+                    L.latLng(40.078755,-75.354918),
+                    L.latLng(40.0882,-75.34063),
+                    L.latLng(40.092164,-75.339225),
+                    L.latLng(40.09199,-75.33911),
+                    L.latLng(40.09056,-75.35096),
+                    L.latLng(40.0997,-75.353533),
+                    L.latLng(40.084078,-75.406782),
+                    L.latLng(40.09669,-75.398447),
+                    L.latLng(40.101094,-75.400758),
+                    L.latLng(40.105204,-75.40273),
+                    L.latLng(40.103439,-75.3704552)                      
                 ];
             
-            var control = 
-            L.Routing.control({
-                router: new L.Routing.OSRMv1({
-                    serviceUrl: 'http://192.168.5.224:5000/route/v1'
-                }),
-                plan: L.Routing.plan(waypoints, {
-                    createMarker: function(i, wp, n){
-                        return L.marker(wp.latLng, {
-                            draggable: true,
-                            icon: L.icon.glyph({ glyph: String.fromCharCode(65 + i) })
-                        }).bindPopup("Some Marker Text").openPopup();
-                    },
-                    routeWhileDragging: true
-                }),
-                routeWhileDragging: true,   
-                showAlternatives: true,
-                lineOptions: {
-                    styles: [{color: 'green', opacity: 1, weight: 5}]
-                }      
-            }).addTo(mymap);
-            // control.hide();
+            waypoints4 = [
+                    L.latLng(40.2552,-75.34546),
+                    L.latLng(40.256603,-75.34409),
+                    L.latLng(40.266	,-75.3741),
+                    L.latLng(40.263405,-75.365458),
+                    L.latLng(40.262546,-75.365698),
+                    L.latLng(40.262011,-75.348833),
+                    L.latLng(40.26904,-75.317365),
+                    L.latLng(40.26904,-75.317365),
+                    L.latLng(40.2679,-75.314376),
+                    L.latLng(40.27015,-75.29945),
+                    L.latLng(40.2883,-75.281114),
+                    L.latLng(40.2717003,-75.3181028)
+                ];
 
+            waypoints5 = [
+                    L.latLng(39.960034,-75.156474),
+                    L.latLng(39.959632,-75.15658),
+                    L.latLng(39.96094,-75.143388),
+                    L.latLng(39.996983,-75.1298),
+                    L.latLng(40.001972,-75.152806),
+                    L.latLng(40.006928,-75.151709),
+                    L.latLng(40.02696,-75.15069),
+                    L.latLng(40.06467,-75.1378),
+                    L.latLng(40.08555,-75.127976),
+                    L.latLng(40.075255,-75.208787),
+                    L.latLng(40.026478,-75.226003),
+                    L.latLng(40.0128908,-75.1838207)
+            ];
+
+            waypoints6 = [
+                    L.latLng(40.112	,-75.03266),
+                    L.latLng(40.127848,-75.022593),
+                    L.latLng(40.098813,-75.020256),
+                    L.latLng(40.154974,-74.97738),
+                    L.latLng(40.214487,-75.028002),
+                    L.latLng(40.238317,-74.996786),
+                    L.latLng(40.361897,-74.952127),
+                    L.latLng(40.324821,-75.029253),
+                    L.latLng(40.3088,-75.136501),
+                    L.latLng(40.331505,-75.122895),
+                    L.latLng(40.33139,-75.126891),
+                    L.latLng(40.366792,-75.140162)
+            ];
+
+            waypointsArray = [waypoints1, waypoints2, waypoints3, waypoints4, waypoints5, waypoints6];
+            colorArray = ['red', 'blue', 'green', 'purple', 'olive', 'teal'];
+
+            for (let index = 0; index < waypointsArray.length; index++) {
+                // waypointsArray[index].push(L.latLng(40.0113, -74.985007));
+                AddControl(mymap, index);                
+            }
+                        
+            function AddControl(mymap, index){
+                var control = L.Routing.control({
+                    router: new L.Routing.OSRMv1({
+                        serviceUrl: 'http://192.168.5.224:5000/route/v1'
+                    }),
+                    plan: L.Routing.plan(waypointsArray[index], {
+                        createMarker: function(i, wp, n){
+                            return L.marker(wp.latLng, {
+                                draggable: true,
+                                icon: L.icon.glyph({ glyph: String.fromCharCode(65 + i) })
+                            }).bindPopup("Some Marker Text").openPopup();
+                        },
+                        routeWhileDragging: true
+                    }),
+                    routeWhileDragging: true, 
+                    showAlternatives: true,
+                    lineOptions: {
+                        styles: [{color: colorArray[index % colorArray.length], opacity: 1, weight: 5}]
+                    }
+                }).addTo(mymap);
+                control.hide();
+            }
+
+            
         </script>
     </body>
 </html>
