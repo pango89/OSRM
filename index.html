@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Leaflet Routing Machine Example</title>
+        <link rel="stylesheet" href="./leaflet.css"/>
+        <link rel="stylesheet" href="./leaflet-routing-machine-3.2.7/dist/leaflet-routing-machine.css"/>
+
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="./leaflet.js"></script>
+        <script src="./leaflet-routing-machine-3.2.7/dist/leaflet-routing-machine.js"></script>
+        <script type="text/javascript" src="./Leaflet.Icon.Glyph.js"></script>
+        <style>
+            html,
+            body,
+            #mapid {
+                height: 100%;
+                width: 100%;
+                padding: 0px;
+                margin: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="mapid"></div>
+        <script>
+            var mymap = L.map('mapid').setView([40, -75], 15);
+            ATTR = '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+            // CDB_URL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+            // CDB_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            CDB_URL = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
+            // CDB_URL = 'http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'; // a,b,c
+            // CDB_URL = 'http://tile2.opencyclemap.org/transport/{z}/{x}/{y}.png';
+            // CDB_URL = 'http://a.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png'; // a, b, c
+            // CDB_URL = 'http://a.tile.stamen.com/toner/{z}/{x}/{y}.png'; //a, b, c
+            // CDB_URL = 'http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'; //a, b, c
+            // CDB_URL = 'http://a.tile.stamen.com/watercolor/{z}/{x}/{y}.png'; //a, b, c
+            // Refer https://wiki.openstreetmap.org/wiki/Tile_servers
+            // https://leaflet-extras.github.io/leaflet-providers/preview/
+            L.tileLayer(CDB_URL, {  attribution: ATTR }).addTo(mymap);
+
+            waypoints = [
+                    L.latLng(40.042271, -75.502317),           
+                    L.latLng(40.051199, -75.499109),
+                    L.latLng(40.06, -75.499),
+                    L.latLng(40.07, -75.507)
+                ];
+            
+            var control = 
+            L.Routing.control({
+                router: new L.Routing.OSRMv1({
+                    serviceUrl: 'http://192.168.5.224:5000/route/v1'
+                }),
+                plan: L.Routing.plan(waypoints, {
+                    createMarker: function(i, wp, n){
+                        return L.marker(wp.latLng, {
+                            draggable: true,
+                            icon: L.icon.glyph({ glyph: String.fromCharCode(65 + i) })
+                        }).bindPopup("Some Marker Text").openPopup();
+                    },
+                    routeWhileDragging: true
+                }),
+                routeWhileDragging: true,   
+                showAlternatives: true,
+                lineOptions: {
+                    styles: [{color: 'green', opacity: 1, weight: 5}]
+                }      
+            }).addTo(mymap);
+            // control.hide();
+
+        </script>
+    </body>
+</html>
